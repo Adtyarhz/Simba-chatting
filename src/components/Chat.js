@@ -9,8 +9,6 @@ import {
   orderBy,
 } from "firebase/firestore";
 
-import "../styles/Chat.css";
-
 const Chat = ({ postId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -31,7 +29,7 @@ const Chat = ({ postId }) => {
     });
 
     return () => unsubscribe();
-  }, [postId, messagesRef]); // Added messagesRef to dependency array
+  }, [postId, messagesRef]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -53,26 +51,31 @@ const Chat = ({ postId }) => {
   };
 
   return (
-    <div className="chat-app">
-      <div className="header">
-        <h1>Comments for Post</h1>
-      </div>
-      <div className="messages">
+    <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
+      <h2 className="text-xl font-semibold mb-4 text-white">Comments</h2>
+      <div className="max-h-96 overflow-y-auto mb-4">
         {messages.map((message) => (
-          <div key={message.id} className="message">
-            <span className="user">{message.user}:</span> {message.text}
+          <div
+            key={message.id}
+            className="flex items-start p-3 border-b border-gray-700"
+          >
+            <span className="font-bold text-blue-400 mr-2">{message.user}:</span>
+            <p className="text-gray-200">{message.text}</p>
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="new-message-form">
+      <form onSubmit={handleSubmit} className="flex gap-2">
         <input
           type="text"
           value={newMessage}
           onChange={(event) => setNewMessage(event.target.value)}
-          className="new-message-input"
+          className="flex-1 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Type your comment here..."
         />
-        <button type="submit" className="send-button">
+        <button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200"
+        >
           Send
         </button>
       </form>
