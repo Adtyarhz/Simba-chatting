@@ -8,6 +8,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import "./Chat.css";
 
 const Chat = ({ postId }) => {
   const [messages, setMessages] = useState([]);
@@ -51,31 +52,25 @@ const Chat = ({ postId }) => {
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-      <h2 className="text-xl font-semibold mb-4 text-white">Comments</h2>
-      <div className="max-h-96 overflow-y-auto mb-4">
+    <div className="comments-container">
+      <h2>Comments</h2>
+      <div className="comments-list">
         {messages.map((message) => (
-          <div
-            key={message.id}
-            className="flex items-start p-3 border-b border-gray-700"
-          >
-            <span className="font-bold text-blue-400 mr-2">{message.user}:</span>
-            <p className="text-gray-200">{message.text}</p>
+          <div key={message.id} className="comment">
+            <span className="comment-user">{message.user}:</span>
+            <p className="comment-text">{message.text}</p>
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <form onSubmit={handleSubmit} className="comment-form">
         <input
           type="text"
           value={newMessage}
           onChange={(event) => setNewMessage(event.target.value)}
-          className="flex-1 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="comment-input"
           placeholder="Type your comment here..."
         />
-        <button
-          type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200"
-        >
+        <button type="submit" className="submit-button">
           Send
         </button>
       </form>

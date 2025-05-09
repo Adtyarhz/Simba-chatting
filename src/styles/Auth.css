@@ -1,14 +1,80 @@
-.auth {
-  text-align: center;
+.auth-container {
+  background: linear-gradient(135deg, #1e1e2f 0%, #2a2a3d 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
 }
 
-.auth button {
-  width: 200px;
-  height: 50px;
+.auth-card {
+  background: #2c2c3f;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.auth-card h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.auth-card p {
+  font-size: 16px;
+  color: #d0d0ff;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.sign-in-button {
+  padding: 12px 24px;
+  background: linear-gradient(45deg, #6b6bff, #a0a0ff);
   border: none;
-  background-color: #3b5998;
-  color: white;
   border-radius: 8px;
-  font-size: 18px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.sign-in-button:hover {
+  background: linear-gradient(45deg, #5050cc, #8080ff);
+  transform: scale(1.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .auth-card {
+    padding: 30px;
+  }
+  .auth-card h2 {
+    font-size: 26px;
+  }
+  .auth-card p {
+    font-size: 14px;
+  }
+  .sign-in-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 20px;
+  }
+  .auth-card h2 {
+    font-size: 22px;
+  }
+  .sign-in-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 }

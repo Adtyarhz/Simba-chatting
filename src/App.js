@@ -7,6 +7,7 @@ import ChatPage from './components/ChatPage';
 import { auth } from './firebase-config';
 import Cookies from 'universal-cookie';
 import { signOut } from 'firebase/auth';
+import './App.css';
 
 const cookies = new Cookies();
 
@@ -45,17 +46,14 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-900">
-        <header className="bg-gray-800 p-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">Chat App</h1>
-          <button
-            onClick={signOutUser}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition duration-200"
-          >
+      <div className="app-container">
+        <header className="header">
+          <h1>Chat App</h1>
+          <button onClick={signOutUser} className="sign-out-button">
             Sign Out
           </button>
         </header>
-        <main className="container mx-auto p-4">
+        <main className="main-content">
           <PostForm addPost={addPost} />
           <Routes>
             <Route path="/" element={<ChatList posts={posts} setPosts={setPosts} />} />

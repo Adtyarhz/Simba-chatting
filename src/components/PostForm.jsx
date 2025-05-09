@@ -60,23 +60,27 @@ const PostForm = ({ addPost }) => {
   };
 
   return (
-    <div className="post-form">
+    <div className="post-form-container">
+      <h2>Create a New Post</h2>
       <form onSubmit={createPost}>
         <input
           type="text"
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          className="title-input"
         />
         <textarea
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          className="description-input"
         />
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
+          className="image-input"
         />
         {image && (
           <img
@@ -85,7 +89,7 @@ const PostForm = ({ addPost }) => {
             className="image-preview"
           />
         )}
-        <button type="submit">Post</button>
+        <button type="submit" className="submit-button">Post</button>
         {error && <p className="error">{error}</p>}
       </form>
     </div>

@@ -1,114 +1,272 @@
 .chat-list {
-  background-color: #000000;
-  color: white;
-  padding: 20px;
-  height: 100vh; /* Full screen height */
+  background: #2c2c3f;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  color: #e0e0e0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-.header h1 {
+.header h2 {
   font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   margin: 0;
 }
 
 .menu-icon {
   font-size: 24px;
   cursor: pointer;
+  color: #a0a0ff;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.menu-icon:hover {
+  color: #c0c0ff;
+  transform: scale(1.1);
 }
 
 .search-bar {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  background-color: #333333;
-  border: none;
-  border-radius: 5px;
-  color: white;
+  width: 97.5%;
+  padding: 14px;
+  margin-bottom: 15px;
+  background: #33334d;
+  border: 1px solid #40405a;
+  border-radius: 10px;
+  color: #e0e0e0;
   font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #6b6bff;
+  box-shadow: 0 0 8px rgba(107, 107, 255, 0.5);
 }
 
 .search-bar::placeholder {
-  color: #aaaaaa;
+  color: #88889f;
+}
+
+.no-posts {
+  color: #88889f;
+  font-size: 16px;
+  text-align: center;
+  margin: 40px 0;
+}
+
+.error {
+  color: #ff6b6b;
+  font-size: 16px;
+  margin-bottom: 15px;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  max-height: 70vh;
   overflow-y: auto;
-  max-height: 70vh; /* Limit height to allow scrolling */
+  padding-bottom: 20px;
+}
+
+/* Responsive Grid */
+@media (max-width: 1024px) {
+  .posts-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .post-card {
   position: relative;
-  width: 200px;
-  margin: 0 auto;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 12px;
   cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background: #33334d;
+}
+
+.post-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 .post-image {
   width: 100%;
-  height: auto;
-  border-radius: 5px;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
 }
 
 .post-overlay {
-  display: none; /* Hidden by default */
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+  opacity: 0;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  padding: 15px;
+  transition: opacity 0.4s ease;
 }
 
 .post-card:hover .post-overlay {
-  display: flex; /* Show on hover */
+  opacity: 1;
 }
 
 .post-overlay h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 700;
   text-align: center;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.post-overlay .like-count {
-  margin: 5px 0 0;
+.post-overlay-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.like-count {
   font-size: 14px;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: none; /* Remove background since overlay already has it */
-  padding: 0; /* Remove padding */
+  color: #d0d0ff;
 }
 
 .like-button {
-  padding: 5px 10px;
-  background-color: #4a90e2;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #6b6bff, #a0a0ff);
   border: none;
-  border-radius: 5px;
-  color: white;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 5px;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .like-button:hover {
-  background-color: #357abd;
+  background: linear-gradient(45deg, #5050cc, #8080ff);
+  transform: scale(1.05);
 }
 
-.error {
-  color: red;
-  font-size: 14px;
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.pagination-button {
+  padding: 10px 20px;
+  background: #33334d;
+  border: 1px solid #40405a;
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.pagination-button:hover {
+  background: #40405a;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.pagination-button.active {
+  background: linear-gradient(45deg, #6b6bff, #a0a0ff);
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.pagination-button:disabled {
+  background: #33334d;
+  color: #88889f;
+  cursor: not-allowed;
+}
+
+/* Custom Scrollbar */
+.posts-grid::-webkit-scrollbar {
+  width: 10px;
+}
+
+.posts-grid::-webkit-scrollbar-track {
+  background: #33334d;
+  border-radius: 8px;
+}
+
+.posts-grid::-webkit-scrollbar-thumb {
+  background: #6b6bff;
+  border-radius: 8px;
+}
+
+.posts-grid::-webkit-scrollbar-thumb:hover {
+  background: #5050cc;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .chat-list {
+    padding: 20px;
+  }
+  .header h2 {
+    font-size: 20px;
+  }
+  .search-bar,
+  .like-button,
+  .pagination-button {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-list {
+    padding: 15px;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .menu-icon {
+    font-size: 20px;
+  }
 }

@@ -9,6 +9,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import "../styles/ChatPage.css";
 
 const ChatPage = () => {
   const { postId } = useParams();
@@ -131,60 +132,48 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition duration-200"
-        >
+    <div className="chat-page">
+      <div className="header">
+        <button onClick={() => navigate(-1)} className="back-button">
           ← Back
         </button>
-        <h1 className="text-2xl font-bold text-white">Live Chat for Post</h1>
+        <h1>Live Chat for Post</h1>
       </div>
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="error">{error}</p>}
       {post && (
-        <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-          <h2 className="text-xl font-semibold text-white mb-4">{post.title}</h2>
+        <div className="post-container">
+          <h2>{post.title}</h2>
           <img
             src={`data:image/png;base64,${post.image_data}`}
             alt={post.description}
-            className="w-full max-w-md h-auto rounded-lg mb-4"
+            className="post-image"
             onError={(e) => console.error("Error loading image:", post.image_data)}
           />
-          <p className="text-gray-300 mb-4">{post.description}</p>
-          <button
-            onClick={handleLike}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200"
-          >
+          <p className="post-description">{post.description}</p>
+          <button onClick={handleLike} className="like-button">
             Like ({post ? post.like_count : 0})
           </button>
         </div>
       )}
-      <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-        <h2 className="text-xl font-semibold mb-4 text-white">Comments</h2>
-        <div className="max-h-96 overflow-y-auto mb-4">
+      <div className="comments-container">
+        <h2>Comments</h2>
+        <div className="comments-list">
           {messages.map((message) => (
-            <div
-              key={message.id}
-              className="flex items-start p-3 border-b border-gray-700"
-            >
-              <span className="font-bold text-blue-400 mr-2">{message.user}:</span>
-              <p className="text-gray-200">{message.text}</p>
+            <div key={message.id} className="comment">
+              <span className="comment-user">{message.user}:</span>
+              <p className="comment-text">{message.text}</p>
             </div>
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="comment-form">
           <input
             type="text"
             value={newMessage}
             onChange={(event) => setNewMessage(event.target.value)}
-            className="flex-1 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="comment-input"
             placeholder="Type your comment here..."
           />
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200"
-          >
+          <button type="submit" className="submit-button">
             Send
           </button>
         </form>
