@@ -13,10 +13,15 @@ import "./Chat.css";
 const Chat = ({ postId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [error, setError] = useState(null);
   const messagesRef = collection(db, `posts/${postId}/comments`);
+  const userId = auth.currentUser?.uid;
 
   useEffect(() => {
-    if (!postId) return;
+    if (!postId) {
+      setError("Invalid post ID");
+      return;
+    }
 
     const queryMessages = query(messagesRef, orderBy("createdAt"));
     const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
@@ -25,8 +30,10 @@ const Chat = ({ postId }) => {
         messages.push({ ...doc.data(), id: doc.id });
       });
       setMessages(messages);
+      setError(null);
     }, (error) => {
-      console.error('Error fetching comments:', error);
+      console.error("Error fetching comments:", error);
+      setError(`Failed to load comments: ${error.message}`);
     });
 
     return () => unsubscribe();
@@ -35,7 +42,14 @@ const Chat = ({ postId }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (newMessage === "" || !postId || !auth.currentUser) return;
+    if (newMessage.trim() === "" || !postId || !auth.currentUser) {
+      setError(
+        `Cannot submit: ${
+          !auth.currentUser ? "Please log in" : ""
+        }${!newMessage.trim() ? " Message is empty" : ""}.`
+      );
+      return;
+    }
 
     try {
       await addDoc(messagesRef, {
@@ -46,17 +60,23 @@ const Chat = ({ postId }) => {
         postId,
       });
       setNewMessage("");
+      setError(null);
     } catch (error) {
-      console.error('Error adding comment:', error);
+      console.error("Error adding comment:", error);
+      setError(`Failed to add comment: ${error.message}`);
     }
   };
 
   return (
     <div className="comments-container">
       <h2>Comments</h2>
+      {error && <p className="error">{error}</p>}
       <div className="comments-list">
         {messages.map((message) => (
-          <div key={message.id} className="comment">
+          <div
+            key={message.id}
+            className={`comment ${message.userId === userId ? "own-comment" : "other-comment"}`}
+          >
             <span className="comment-user">{message.user}:</span>
             <p className="comment-text">{message.text}</p>
           </div>

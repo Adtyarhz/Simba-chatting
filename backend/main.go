@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 	"os"
 
 	firebase "firebase.google.com/go"
@@ -10,17 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"google.golang.org/api/option"
 )
-
-type Post struct {
-	ID          string   `json:"id"`
-	UserID      string   `json:"user_id"`
-	Title       string   `json:"title"`
-	ImageData   string   `json:"image_data"`
-	Description string   `json:"description"`
-	LikeCount   int      `json:"like_count"`
-	CreatedAt   string   `json:"created_at"`
-	LikedBy     []string `json:"likedBy"`
-}
 
 func main() {
 	// Get the credentials file path from an environment variable
@@ -69,9 +59,9 @@ func main() {
 	// Configure CORS
 	configCors := cors.DefaultConfig()
 	configCors.AllowOrigins = []string{"http://localhost:3000"}
-	configCors.AllowMethods = []string{"GET", "POST", "OPTIONS"}
+	configCors.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	configCors.AllowHeaders = []string{"Authorization", "Content-Type"}
-	r.Use(cors.New(configCors))
+	r.Use(cors.New(configCors));
 
 	// Authentication middleware
 	r.Use(func(c *gin.Context) {
@@ -84,14 +74,14 @@ func main() {
 		authHeader := c.GetHeader("Authorization")
 		log.Printf("Received Authorization header: %s", authHeader)
 		if authHeader == "" {
-			c.JSON(401, gin.H{"error": "No authorization header"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "No authorization header"})
 			c.Abort()
 			return
 		}
 
 		// Extract token (format: "Bearer <token>")
 		if len(authHeader) <= len("Bearer ") {
-			c.JSON(401, gin.H{"error": "Invalid authorization header"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization header"})
 			c.Abort()
 			return
 		}
@@ -102,7 +92,7 @@ func main() {
 		decodedToken, err := authClient.VerifyIDToken(context.Background(), token)
 		if err != nil {
 			log.Printf("Token verification failed: %v", err)
-			c.JSON(401, gin.H{"error": "Invalid token: " + err.Error()})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token: " + err.Error()})
 			c.Abort()
 			return
 		}
@@ -126,6 +116,12 @@ func main() {
 	})
 	r.POST("/posts/:id/like", func(c *gin.Context) {
 		likePostHandler(c, context.Background(), client)
+	})
+	r.PUT("/posts/:id", func(c *gin.Context) {
+		updatePostHandler(c, context.Background(), client)
+	})
+	r.DELETE("/posts/:id", func(c *gin.Context) {
+		deletePostHandler(c, context.Background(), client)
 	})
 
 	// Start server

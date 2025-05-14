@@ -25,19 +25,42 @@
   align-items: flex-start;
   padding: 15px 0;
   border-bottom: 1px solid #40405a;
+  gap: 10px; /* Consistent spacing between username and text */
+}
+
+.own-comment {
+  justify-content: flex-start; /* Logged-in user's messages on the left */
+}
+
+.other-comment {
+  justify-content: flex-end; /* Other users' messages on the right */
 }
 
 .comment-user {
   font-weight: 700;
   color: #a0a0ff;
-  margin-right: 10px;
   font-size: 16px;
+  min-width: 100px; /* Prevent username from shrinking too much */
+  max-width: 150px; /* Prevent long usernames from pushing text too far */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .comment-text {
   font-size: 16px;
   color: #e0e0e0;
   line-height: 1.5;
+  background: #33334d;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 70%; /* Prevent text from stretching too wide */
+  word-wrap: break-word; /* Ensure long words wrap */
+}
+
+.own-comment .comment-text {
+  background: #6b6bff; /* Different background for own messages */
+  color: #ffffff;
 }
 
 .comment-form {
@@ -121,5 +144,12 @@
   .submit-button {
     font-size: 14px;
     padding: 10px;
+  }
+  .comment-user {
+    min-width: 80px;
+    max-width: 120px;
+  }
+  .comment-text {
+    max-width: 100%; /* Allow more width on smaller screens */
   }
 }
